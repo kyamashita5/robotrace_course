@@ -11,4 +11,9 @@ def plot_points(points_path):
     plt.show()
 
 if __name__ == '__main__':
-    plot_points('real/2019alljapan_points.txt')
+    import sys
+    points_path = 'real/2019alljapan_points.txt'
+    argv = sys.argv    
+    if len(argv) >= 2:
+        points_path = argv[1]
+    plot_points(points_path)
