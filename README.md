@@ -1,4 +1,6 @@
 # robotrace_course
+<img src="fig/2019alljapan_points.png" width=30%>
+
 ## 種類
 * real : 実際にロボットを走行させて記録したデータ
 * synthetic : NTFが公開している図面などをもとに作成したデータ
