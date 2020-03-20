@@ -28,5 +28,4 @@ plot_points.pyを実行することでファイルの中身を確認できます
 python plot_points.py (path to file)
 ```
 実行例：
-
-<img src="fig/2019alljapan_points.png" width=30%>
+![2019east_points](fig/2019east_points.png)
