@@ -1,10 +1,6 @@
 import numpy as np
 
-def compute_marker_center(point_l, ang_l, marker_distance):
-    return point_l + marker_distance * np.array([-np.sin(ang_l), np.cos(ang_l)])
-
-
-def convert_vector_to_raster(l_block, c_block, dl=0.01, marker_distance = 0.07):
+def convert_to_points(l_block, c_block, dl=0.01, marker_distance = 0.07):
     # initialize block origin
     pt0 = np.array([0.0, 0.0])
     ang0 = 0.0
@@ -13,8 +9,7 @@ def convert_vector_to_raster(l_block, c_block, dl=0.01, marker_distance = 0.07):
 
     idx_block = 0
     l = 0.0
-    line = []
-    marker = [ compute_marker_center(pt0, ang0, -marker_distance) ]
+    points = []
     while idx_block < len(l_block):
         l_local = l - sum_l
         if l_local > l_block[idx_block]:
@@ -30,8 +25,6 @@ def convert_vector_to_raster(l_block, c_block, dl=0.01, marker_distance = 0.07):
 
             idx_block += 1
 
-            # add new marker
-            marker.append(compute_marker_center(pt0, ang0, np.sign(len(l_block) - 0.5 - idx_block) * marker_distance))
             continue
         
         # add new point on the line
@@ -43,27 +36,15 @@ def convert_vector_to_raster(l_block, c_block, dl=0.01, marker_distance = 0.07):
         pt += dif_t * np.array([ np.cos(ang0), np.sin(ang0)])
         pt += dif_n * np.array([-np.sin(ang0), np.cos(ang0)])
         
-        line.append(pt)
+        points.append(pt)
         l += dl
-    return np.array(line), np.array(marker)
+    return np.array(points)
 
-def save_marker(path, marker, l_block):
-    out_str = '#marker data\n'
-    for i, (pt, l) in enumerate(zip(marker, np.cumsum(l_block) - l_block)):
-        out_str += str(int(l*100)) + ', '
-        out_str += str(int((i==0) or (i==(len(l_block)-1)))) + ', '
-        out_str += str(pt[0]) + ', ' + str(pt[1]) + '\n'
-    with open(path, 'w') as f:
-        f.write(out_str[:-1])
-
-if True:
+if __name__ == '__main__':
     import os
     for raster_path in ['synthetic/'+p for p in os.listdir('synthetic') if p[-4:]=='.csv']:
         l_block, c_block = np.loadtxt(raster_path, delimiter=',').T
-        line, marker = convert_vector_to_raster(l_block, c_block, dl=0.01)
-        np.savetxt(raster_path[:-4]+'_line.txt', line)
-        print(raster_path[:-4]+'_line.txt saved')
-
-        save_marker(raster_path[:-4]+'_marker.txt', marker, l_block)
-        print(raster_path[:-4]+'_marker.txt saved')
+        points = convert_to_points(l_block, c_block, dl=0.01)
+        np.savetxt(raster_path[:-4]+'_points.txt', points)
+        print(raster_path[:-4]+'_points.txt saved')
 
