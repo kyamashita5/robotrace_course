@@ -1,5 +1,4 @@
 # robotrace_course
-<img src="fig/2019alljapan_points.png" width=30%>
 
 ## 種類
 * real : 実際にロボットを走行させて記録したデータ
@@ -23,3 +22,11 @@ x1 y1
 x2 y2
 ...
 ```
+
+plot_points.pyを実行することでファイルの中身を確認できます．
+```
+python plot_points.py (path to file)
+```
+実行例：
+
+<img src="fig/2019alljapan_points.png" width=30%>
