@@ -11,4 +11,4 @@ def plot_points(points_path):
     plt.show()
 
 if __name__ == '__main__':
-    plot_points('synthetic/2015alljapan_points.txt')
+    plot_points('real/2019alljapan_points.txt')
