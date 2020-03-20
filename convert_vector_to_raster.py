@@ -47,6 +47,14 @@ def convert_vector_to_raster(l_block, c_block, dl=0.01, marker_distance = 0.07):
         l += dl
     return np.array(line), np.array(marker)
 
+def save_marker(path, marker, l_block):
+    out_str = '#marker data\n'
+    for i, (pt, l) in enumerate(zip(marker, np.cumsum(l_block) - l_block)):
+        out_str += str(int(l*100)) + ', '
+        out_str += str(int((i==0) or (i==(len(l_block)-1)))) + ', '
+        out_str += str(pt[0]) + ', ' + str(pt[1]) + '\n'
+    with open(path, 'w') as f:
+        f.write(out_str[:-1])
 
 if True:
     import os
@@ -56,8 +64,6 @@ if True:
         np.savetxt(raster_path[:-4]+'_line.txt', line)
         print(raster_path[:-4]+'_line.txt saved')
 
-        #import matplotlib.pyplot as plt
-        #plt.plot(line[:,0], line[:,1])
-        #plt.scatter(marker[:,0], marker[:,1])
-        #plt.show()
+        save_marker(raster_path[:-4]+'_marker.txt', marker, l_block)
+        print(raster_path[:-4]+'_marker.txt saved')
 
